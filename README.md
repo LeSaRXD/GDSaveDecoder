@@ -16,7 +16,7 @@
 
 
 ## stats - not required:
-- k14 = <t /> only if verified
+- k14 = true only if verified
 
 - k18 = attempts
 
@@ -31,11 +31,11 @@
 ## unknown:
 - k34 = random string coded in b64 and gzip
 
-- k16, k85, k86 - random <t />
+- k16, k85, k86 - random true
 
-- k13 = <t />
-- k47 = <t />
-- k89 = <t />
+- k13 = true
+- k47 = true
+- k89 = true
 
 - k80
 
