@@ -21,7 +21,7 @@ def decode_level(is_main=False):
 
         name = data[name_start_index:name_end_index]
 
-        if input(f"Is '{data[name_start_index:name_end_index]}' your level? (y/n): ").lower() == "y":
+        if input(f"Is '{data[name_start_index:name_end_index]}' your level? (Y/n): ").lower() != "n":
             global level_start_index, level_end_index
             level_start_index = data.find("<s>", data.find("<k>k4</k>", name_end_index)) + 3
             level_end_index = data.find("</s>", level_start_index)
@@ -46,6 +46,8 @@ def decode_level(is_main=False):
 
     level_data = level_data.decode("utf-8")
 
+    level_data = level_data.replace(",", ",\n")
+    level_data = level_data.replace("|", "|\n")
     level_data = level_data.replace(";", ";\n") # add newlines for readability
 
     with open(f".{'.' if is_main else ''}/files/levels/{name.replace(' ', '_')}.txt", "w") as output:

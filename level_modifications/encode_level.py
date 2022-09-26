@@ -9,7 +9,7 @@ def encode_level(is_main=False):
             with open(f".{'.' if is_main else ''}/files/levels/{input('Enter file name: ')}", "r") as file:
                 level_data = file.read()
             break
-        except:
+        except FileNotFoundError:
             print("file not found")
 
     level_data = level_data.replace("\n", "") # remove added newlines
@@ -38,7 +38,7 @@ def encode_level(is_main=False):
 
         name = data[name_start_index:name_end_index]
 
-        if input(f"Is '{data[name_start_index:name_end_index]}' your level? (y/n): ").lower() == "y":
+        if input(f"Is '{data[name_start_index:name_end_index]}' your level? (Y/n): ").lower() != "n":
             global level_start_index, level_end_index
             level_start_index = data.find("<s>", data.find("<k>k4</k>", name_end_index)) + 3
             level_end_index = data.find("</s>", level_start_index)
