@@ -64,7 +64,7 @@
 # Level header tags
 > none of these are required for the level to open
 
-- kS38 = all [colors](./README.md#color), seperator is |
+- kS38 = all [colors](#color), seperator is |
 
 - kA2 = gamemode (0-6)
 - kA3 = is mini (0/1)
@@ -88,7 +88,7 @@
 - 3 = blue component
 - 4 = copy player color (-1/0 - none, 1 - player color 1, 2 - player color 2)
 - 5 = blending
-- 6 = [color id](./README.md#color-ids)
+- 6 = [color id](#color-ids)
 - 7 = opacity
 - 8 = 1
 - 9 = copied color id
