@@ -1,10 +1,17 @@
 from base64 import b64decode
 from zlib import decompress as gunzip, MAX_WBITS
+from sys import platform
 
 def decode_save(is_main=False):
     code = ""
 
-    with open("/home/lesar/.steam/steam/steamapps/compatdata/322170/pfx/drive_c/users/steamuser/AppData/Local/GeometryDash/CCLocalLevels.dat", "rb") as file:
+    filename = ""
+    if platform == "linux":
+        filename = "/home/lesar/.steam/steam/steamapps/compatdata/322170/pfx/drive_c/users/steamuser/AppData/Local/GeometryDash/CCLocalLevels.dat"
+    else:
+        filename = "C:/Users/LeSaR/AppData/Local/GeometryDash/CCLocalLevels.dat"
+    
+    with open(filename, "rb") as file:
         code = file.read()
 
     code = bytes([i ^ 11 for i in code])
@@ -23,9 +30,9 @@ def decode_save(is_main=False):
                 return
     
     code = code.decode("utf-8")
-    code = code.replace("<k>", "\n<k>")
-    code = code.replace("<d>", "\n<d>")
-    code = code.replace("</d>", "\n</d>")
+    code = code.replace("<k>", "/n<k>")
+    code = code.replace("<d>", "/n<d>")
+    code = code.replace("</d>", "/n</d>")
     
     with open(f".{'.' if is_main else ''}/files/CCLocalLevels.xml", "w") as file:
         file.write(code)
