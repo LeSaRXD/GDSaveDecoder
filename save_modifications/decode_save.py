@@ -1,5 +1,6 @@
 from base64 import b64decode
 from zlib import decompress as gunzip, MAX_WBITS
+from xml.dom.minidom import parseString
 from sys import platform
 
 def decode_save(is_main=False):
@@ -30,9 +31,8 @@ def decode_save(is_main=False):
                 return
     
     code = code.decode("utf-8")
-    code = code.replace("<k>", "/n<k>")
-    code = code.replace("<d>", "/n<d>")
-    code = code.replace("</d>", "/n</d>")
+    code = code.replace("\n", "").replace("\r", "").replace("\t", "")
+    code = parseString(code).toprettyxml()
     
     with open(f".{'.' if is_main else ''}/files/CCLocalLevels.xml", "w") as file:
         file.write(code)

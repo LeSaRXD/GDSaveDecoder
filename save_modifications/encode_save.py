@@ -1,5 +1,6 @@
 from base64 import b64encode
 from zlib import compress as gzip
+from sys import platform
 
 def encode_save(is_main=False):
     code = ""
