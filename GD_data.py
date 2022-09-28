@@ -147,6 +147,8 @@ class Level:
         
         return "<d>\n" + "\n".join([f"<k>{key}</k>{parse(value)}" for key, value in info.items()]) + "\n</d>"
 
+
+
 level_data1 = LevelData([], [Color(1000, 255, 0, 0, 1, False), Color(1001, 128, 0, 0, 1, False)], speed=Speed.X2)
 level1 = Level("cool level", level_data1, "cool level description", verified=True)
 print(str(level1))
