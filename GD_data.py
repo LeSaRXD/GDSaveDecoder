@@ -167,3 +167,25 @@ class Level:
             return f"<s>{value}</s>"
         
         return "<d>\n" + "\n".join([f"<k>{key}</k>{parse(value)}" for key, value in info.items()]) + "\n</d>"
+
+    def insert_into_file(self, filename="./files/CCLocalLevels.xml") -> None:
+        data = ""
+        with open(filename, "r") as file:
+            data = file.read()
+        with open(filename.replace(".xml", "_old.xml"), "w") as file:
+            file.write(data)
+         
+        max_k = 0
+        while f"<k>k_{max_k}</k>" in data:
+            max_k += 1
+
+        for k in range(max_k, 0, -1):
+            data = data.replace(f"<k>k_{k - 1}</k>", f"<k>k_{k}</k>")
+
+        insert_pos = data.find("\n", data.find("<t", data.find("<k>_isArr</k>")))
+
+        data = data[:insert_pos] + "\n<k>k_0</k>\n" + str(self) + data[insert_pos:]
+
+        with open(filename, "w") as file:
+            file.write(data)
+        
