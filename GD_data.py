@@ -2,6 +2,8 @@ from base64 import b64encode
 from zlib import compress as gzip
 from enum import Enum
 
+
+
 class Gamemode(Enum):
     CUBE = 0
     SHIP = 1
@@ -29,7 +31,7 @@ class HSV:
         self.add_saturation = add_saturation
         self.add_value = add_value
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return f"{self.hue}a{self.saturation}a{self.value}a{+self.add_saturation}a{+self.add_value}"
 
 class Color:
@@ -47,19 +49,38 @@ class Color:
         self.copy_color_hsv = copy_color_hsv
         self.copy_color_opacity = copy_color_opacity
         
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         r = f"1_{self.r}_2_{self.g}_3_{self.b}_6_{self.id}_7_{self.a}"
         if self.blending:
             r += f"_5_1"
         if self.copy_color_id >= 0:
-            r += f"_9_{self.copy_color_id}_10_{str(self.copy_color_hsv)}_17_{+self.copy_color_opacity}"
+            r += f"_9_{self.copy_color_id}_10_{self.copy_color_hsv}_17_{+self.copy_color_opacity}"
 
         return r
+
+class Block:
+    def __init__(self, id: int, x: float, y: float, attrs: dict) -> None:
+        self.id = id
+
+        self.x = x
+        self.y = y
+
+        self.attrs = attrs
+    
+    def __repr__(self) -> str:
+        info = {
+            1: self.id,
+            2: (30 * self.x) + 15,
+            3: (30 * self.y) + 15
+        }
+        info.update(self.attrs)
+    
+        return ",".join([f"{str(key)},{str(value)}" for key, value in info.items()]) + ";"
 
 
 
 class LevelData:
-    def __init__(self, blocks: list, colors: list[Color]=[], gamemode=Gamemode.CUBE, mini=False, speed=Speed.NORMAL, dual=False, is_2_player=False, bg_id=0, ground_id=0, ground_line_solid=False, font=0) -> None:
+    def __init__(self, blocks: list[Block]=[], colors: list[Color]=[], gamemode=Gamemode.CUBE, mini=False, speed=Speed.NORMAL, dual=False, is_2_player=False, bg_id=0, ground_id=0, ground_line_solid=False, font=0) -> None:
         # gameplay
         self.blocks = blocks
 
@@ -79,7 +100,7 @@ class LevelData:
 
         self.font = font
         
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         header = {
             "kA2": self.gamemode.value,
             "kA3": +self.mini,
@@ -92,12 +113,12 @@ class LevelData:
         }
 
         if len(self.colors) > 0:
-            header["kS38"] = "|".join([str(color) for color in self.colors]) + "|"
+            header["kS38"] = "|".join(self.colors) + "|"
         
         r_str = ",".join([f"{key},{value}" for key, value in header.items()])
         r_str += ";"
 
-        # TODO: add blocks
+        r_str += ";".join([str(block) for block in self.blocks])
 
         return r_str
 
@@ -114,7 +135,7 @@ class Level:
 
         self.verified = verified
     
-    def __str__(self):
+    def __repr__(self):
         info = {
             "kCEK": 4,
             "k2": self.name,
@@ -146,9 +167,3 @@ class Level:
             return f"<s>{value}</s>"
         
         return "<d>\n" + "\n".join([f"<k>{key}</k>{parse(value)}" for key, value in info.items()]) + "\n</d>"
-
-
-
-level_data1 = LevelData([], [Color(1000, 255, 0, 0, 1, False), Color(1001, 128, 0, 0, 1, False)], speed=Speed.X2)
-level1 = Level("cool level", level_data1, "cool level description", verified=True)
-print(str(level1))

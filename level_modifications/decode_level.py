@@ -12,7 +12,7 @@ def decode_level(is_main=False):
     while True:
         name = input("Enter level name: ")
 
-        name_start_index = data.find(f"<s>{name}") + 3
+        name_start_index = data.lower().find(f"<s>{name}") + 3
         if name_start_index <= 3:
             print("Level name not found")
             continue
