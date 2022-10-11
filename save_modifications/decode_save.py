@@ -2,15 +2,16 @@ from base64 import b64decode
 from zlib import decompress as gunzip, MAX_WBITS
 from xml.dom.minidom import parseString
 from sys import platform
+from os import getlogin
 
 def decode_save(is_main=False):
     code = ""
 
     filename = ""
     if platform == "linux":
-        filename = "/home/lesar/.steam/steam/steamapps/compatdata/322170/pfx/drive_c/users/steamuser/AppData/Local/GeometryDash/CCLocalLevels.dat"
+        filename = f"/home/{getlogin()}/.steam/steam/steamapps/compatdata/322170/pfx/drive_c/users/steamuser/AppData/Local/GeometryDash/CCLocalLevels.dat"
     else:
-        filename = "C:/Users/LeSaR/AppData/Local/GeometryDash/CCLocalLevels.dat"
+        filename = f"C:/Users/{getlogin()}/AppData/Local/GeometryDash/CCLocalLevels.dat"
     
     with open(filename, "rb") as file:
         code = file.read()
